@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SIMP</class>
+ <widget class="QWidget" name="SIMP">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1075</width>
+    <height>717</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ROKAF Space Information Management Program</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
+  <widget class="QStackedWidget" name="stackedWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>100</y>
+     <width>1051</width>
+     <height>591</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <widget class="QWidget" name="page">
+    <widget class="QListWidget" name="list_report">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>201</width>
+       <height>481</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>90</y>
+       <width>721</width>
+       <height>171</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>위성 데이터 현황</string>
+     </property>
+     <widget class="QPushButton" name="button_update_cdm">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>20</y>
+        <width>121</width>
+        <height>28</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>CDM 업데이트</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="button_update_satcat">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>50</y>
+        <width>121</width>
+        <height>28</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>SATCAT 업데이트</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>55</y>
+        <width>151</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>마지막 CDM 생성시간</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_creation_date_utc">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>55</y>
+        <width>161</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;마지막 CDM 생성시간&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>75</y>
+        <width>161</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>SATCAT 업데이트 시간</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>75</y>
+        <width>161</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;마지막 CDM 생성시간&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_creation_date_kst">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>55</y>
+        <width>161</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;마지막 CDM 생성시간&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>30</y>
+        <width>64</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>UTC</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>30</y>
+        <width>64</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>KST</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>140</y>
+        <width>151</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>마지막 보고서 생성</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_last_report_utc">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>140</y>
+        <width>161</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;마지막 CDM 생성시간&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_last_report_kst">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>140</y>
+        <width>161</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;마지막 CDM 생성시간&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>261</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;일일상황일지&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_make_report">
+     <property name="geometry">
+      <rect>
+       <x>840</x>
+       <y>40</y>
+       <width>131</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>보고서 작성</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="issuer">
+     <property name="geometry">
+      <rect>
+       <x>650</x>
+       <y>40</y>
+       <width>171</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>595</x>
+       <y>47</y>
+       <width>64</width>
+       <height>15</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>작성자:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>60</y>
+       <width>141</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>검색 기준시간 (UTC)</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_report_ref">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>61</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_test">
+     <property name="geometry">
+      <rect>
+       <x>770</x>
+       <y>500</y>
+       <width>93</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TEST</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_test_2">
+     <property name="geometry">
+      <rect>
+       <x>770</x>
+       <y>530</y>
+       <width>93</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TEST</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>49</y>
+       <width>81</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>삭제</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_3">
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>221</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>우주물체 자료관리</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_2"/>
+  </widget>
+  <widget class="QPushButton" name="button_daily_report">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>161</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>일일상황일지</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_manage_data">
+   <property name="geometry">
+    <rect>
+     <x>184</x>
+     <y>20</y>
+     <width>161</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>우주물체 자료관리</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_3">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>20</y>
+     <width>161</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TLE 필터</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

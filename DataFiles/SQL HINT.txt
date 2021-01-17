@@ -1,0 +1,98 @@
+select sat1_object_designator, sat1_international_designator, count(message_id) from cdm group by sat1_object_designator;
+
+select sat1_object_designator, sat1_international_designator, sat1_object_name, count(message_id) from cdm group by sat1_object_designator;
+
+select sat1_object_designator, sat1_international_designator, sat1_object_name , count(message_id) from cdm where creation_date > '2021-01-01' group by sat1_object_designator;
+
+select count(*) from cdm where creation_date > '2021-01-01' and sat1_object_designator = 29268
+#Space-track.org Spaceflight safety handbook(p.9) 
+
+
+SELECT sat1_object_designator, sat1_international_designator, sat1_object_name, count(message_id) 
+FROM cdm, satcat 
+WHERE cdm.sat1_object_designator = satcat.norad and satcat.orbital_period < 225 and cdm.miss_distance < 1000 and creation_date > '2021-01-01T00:00:00'
+GROUP BY sat1_object_designator
+
+select count(*) from cdm where sat1_object_designator = 29268 and miss_distance < 1000
+
+select count(*) from cdm where creation_date > '2021-01-00T00:00:00'
+
+
+####
+SELECT sat1_object_designator, sat1_international_designator, sat1_object_name, count(message_id) 
+FROM cdm 
+WHERE creation_date > ? 
+GROUP BY sat1_object_designator;
+
+1.
+####
+CREATE TABLE satellites (norad int, international_designator string primary key, satellite_name string)
+####
+select distinct sat1_object_designator, sat1_international_designator, sat1_object_name from cdm
+insert into satellites (norad, international_designator, satellite_name) values (?, ?, ?)
+
+2.
+####
+SELECT sat1_object_designator, sat1_international_designator, sat1_object_name, count(message_id) 
+FROM cdm, satcat 
+WHERE cdm.sat1_object_designator = satcat.norad and satcat.orbital_period < ? and cdm.miss_distance < ? and creation_date > ?
+GROUP BY sat1_object_designator
+
+####
+SELECT sat1_object_designator, sat1_international_designator, sat1_object_name, count(message_id) 
+FROM cdm, satcat 
+WHERE cdm.sat1_object_designator = satcat.norad and satcat.orbital_period >= ? and cdm.miss_distance < ? and creation_date > ?
+GROUP BY sat1_object_designator
+
+####
+select international_designator from satellites
+
+
+#4. cdm screening
+SELECT creation_date, message_id, satcat.orbital_period, miss_distance, collision_probability, tca, eventnum, event_year, sat1_object_name, sat1_object_designator, sat2_object_name, sat2_object_designator 
+FROM cdm, satcat 
+WHERE cdm.sat1_international_designator = satcat.international_designator and creation_date > '2021-01-15T15:53:57' and satcat.orbital_period >= 225 and miss_distance < 5000 
+ORDER BY eventnum desc
+
+## 4. CDM 스크리닝
+	0		1		2			3		4		5	6	7		8		9			10
+SELECT creation_date, message_id, satcat.orbital_period, miss_distance, collision_probability, tca, eventnum, event_year, sat1_object_name, sat1_object_designator, sat2_object_name, sat2_object_designator 
+FROM cdm, satcat 
+WHERE cdm.sat1_international_designator = satcat.international_designator and creation_date > ? and satcat.orbital_period {< 225} and miss_distance < {1000}
+ORDER BY eventnum desc
+
+## 5.1 전파대상 CDM 검색
+SELECT message_id 
+FROM cdm, satcat 
+WHERE cdm.sat1_international_designator = satcat.international_designator and satcat.orbital_period {< 225} and miss_distance < ? and collision_probability > ?
+
+## 5.2 전파대상 CDM 검색
+select message_id 
+from satcat,
+(select message_id, sat1_international_designator, miss_distance, collision_probability, eventnum, max(creation_date) from cdm where creation_date > '2021-01-01T12:00:00' group by eventnum) o
+where satcat.international_designator = o.sat1_international_designator and satcat.orbital_period < 225 and o.miss_distance < 1000 and o.collision_probability > 0.000001
+
+## 5.3 전파대상 CDM 검색
+select message_id 
+from satcat,
+(select message_id, sat1_international_designator, miss_distance, collision_probability, eventnum, max(creation_date) from cdm where creation_date > '2021-01-01T12:00:00' group by eventnum) o
+where satcat.international_designator = o.sat1_international_designator and satcat.orbital_period >= 225 and o.miss_distance < 5000 
+
+## 5.4 전파대상 CDM 검색
+select message_id 
+from satcat,
+(select message_id, sat1_international_designator, miss_distance, eventnum, max(creation_date) from cdm where creation_date > '2021-01-15T12:00:00' group by eventnum) o
+where satcat.international_designator = o.sat1_international_designator and satcat.orbital_period < 225 and o.miss_distance < 1000
+
+## 5.5 전파대상 CDM 검색
+select message_id from cdm where creation_date in
+(SELECT eventnum, max(creation_date) from cdm where creation_date > ? group by eventnum)
+
+## 5.6 전파대상 CDM 검색
+select cdm.message_id from cdm, satcat, (select eventnum, max(creation_date) as c_date from cdm where creation_date > '2021-01-15T12:00:00' group by eventnum) o where cdm.eventnum = o.eventnum and cdm.creation_date = o.c_date
+
+## 5.7 전파대상 CDM 검색
+select cdm.message_id from cdm, 
+	(select eventnum, max(creation_date) as c_date 
+	from cdm, satcat 
+	where creation_date > '2021-01-15T12:00:00' and cdm.sat1_international_designator = satcat.international_designator group by eventnum) o where cdm.eventnum = o.eventnum and cdm.creation_date = o.c_date
