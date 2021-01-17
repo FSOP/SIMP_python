@@ -1,1 +1,0 @@
-C:\Users\ukouu\IdeaProjects\Misc\sqlite-tools-win32-x86-3330000\sqlite3.exe "C:\Users\ukouu\PycharmProjects\SIMP_python\DataFiles\CDM.txt"
