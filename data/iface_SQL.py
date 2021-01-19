@@ -1,3 +1,5 @@
+sql_delete_report = "delete from metadata where target = ? and updatetime = ?"
+
 class iface_SQL:
     orbit_type_period_criteria = 225  # see Space-track.org Spaceflight safety handbook
     orbit_leo_period_criteria = "< 225"
@@ -41,3 +43,4 @@ class iface_SQL:
                      "FROM cdm, satcat " \
                      "WHERE cdm.sat1_international_designator = satcat.international_designator and creation_date > ? and satcat.orbital_period {} and miss_distance < {} " \
                      "ORDER BY eventnum desc"
+

@@ -46,7 +46,8 @@ class SPlogin:
             # query = iface.baseSPurl + iface.queryCDM_xml.format(p)
             resp = self.session.get(iface.baseSPurl + iface.queryCDM_xml.format(p))
 
-            with open(iface.LOC_CDM_XML.format(p), 'w') as fp:
-                fp.write(resp.text)
+            return resp.text
+
+
 
             #print(resp.text)

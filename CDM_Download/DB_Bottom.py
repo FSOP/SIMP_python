@@ -17,7 +17,7 @@ class DB_Bottom:
     #     conn.close()
 
     def db_init(self, db_loc):
-        #print("[DB_BOTTOM] db open at {}".format(db_loc))
+        # print("[DB_BOTTOM] db open at {}".format(db_loc))
         self.conn = sqlite3.connect(db_loc)
         self.cur = self.conn.cursor()
 
@@ -25,6 +25,16 @@ class DB_Bottom:
         self.conn.close()
         self.conn = None
         self.cur = None
+
+    def db_simple_execute(self, query, db):
+        self.db_init(db)
+
+        rows = self.cur.execute(query).fetchall()
+
+        self.conn.commit()
+        self.db_close()
+
+        return rows
 
 
 

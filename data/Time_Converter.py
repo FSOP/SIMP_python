@@ -10,6 +10,13 @@ def utc_to_kst_str(utc_str, time_format=iface.Time_format):
         return datetime_to_str(utc_str + datetime.timedelta(hours=9), time_format=time_format)
 
 
+def kst_to_utc_str(kst_str, time_format=iface.Time_format_2):
+    if isinstance(kst_str, str):
+        return datetime_to_str(datetime.datetime.strptime(kst_str, time_format) - datetime.timedelta(hours=9), time_format=iface.Time_format)
+    elif isinstance(kst_str, datetime.datetime):
+        return datetime_to_str(kst_str - datetime.timedelta(hours=9), time_format=iface.Time_format)
+
+
 def str_to_datetime(str_val, time_format=iface.Time_format):
     if len(str_val) > 19:
         str_val = str_val[:19]

@@ -30,6 +30,8 @@ SPauthformat = "identity={}&password={}"
 URL_SATCAT = "http://celestrak.com/pub/satcat.txt"
 
 Time_format = "%Y-%m-%dT%H:%M:%S"
+Time_format_2 = "%Y%m%d_%H%M%S"
+
 
 META_DATA_TIME_UTC = "2021-01-01T00:00:00"
 META_DATA_LIST = {

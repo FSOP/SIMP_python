@@ -1,8 +1,8 @@
-from data import Metadata, Time_Converter
-from CDM_Download import iface, CDM_download_main, SATCAT_Download
+from data import Metadata, Time_Converter, iface_SQL
+from CDM_Download import iface, CDM_download, SATCAT_Download, DB_Bottom
 from DailyReport import MakeReport, Get_panel_data
 
-import subprocess
+import subprocess, os
 
 
 class daily_report:
@@ -12,12 +12,12 @@ class daily_report:
             self.update_data()
 
             self.ui.list_report.itemDoubleClicked.connect(self.open_selected_report)
-
             self.ui.button_update_cdm.clicked.connect(lambda: self.update_cdm())
             self.ui.button_update_satcat.clicked.connect(lambda: self.update_satcat())
             self.ui.button_make_report.clicked.connect(lambda: self.report_make())
-
-            self.ui.button_test.clicked.connect(lambda: self.update_data())
+            self.ui.button_test_2.clicked.connect(lambda: self.update_data())
+            self.ui.button_open_cdm.clicked.connect(lambda: os.startfile(os.getcwd()+"\\..\\CDM_xml"))
+            self.ui.button_delete_list.clicked.connect(lambda: self.delete_report_list())
 
         except Exception as e:
             print(e)
@@ -35,6 +35,18 @@ class daily_report:
         self.ui.list_report.clear()
         self.ui.list_report.addItems(Metadata.get_list_report_docx())
 
+    def delete_report_list(self):
+        if self.ui.list_report.selectedItems():
+            db_handle = DB_Bottom.DB_Bottom()
+            db_handle.db_init(iface.LOC_DB_METADATA)
+            db_handle.cur.execute(iface_SQL.sql_delete_report,
+                                  (iface.DAILY_REPORT_UTC,
+                                   Time_Converter.kst_to_utc_str(self.ui.list_report.selectedItems()[0].text())))
+            db_handle.conn.commit()
+            db_handle.db_close()
+
+        self.update_data()
+
     @staticmethod
     def open_selected_report(i):
         file = iface. LOC_DAILY_REPORT.format(i.text())
@@ -45,8 +57,7 @@ class daily_report:
         self.update_data()
 
     def update_cdm(self):
-        print("update_cdm")
-        CDM_download_main.download()
+        CDM_download.download()
         self.update_data()
 
     def report_make(self):

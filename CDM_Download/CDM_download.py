@@ -41,8 +41,7 @@ def download():
 
 
 class CDM_Download(object):
-    utc_last_cdm_creation_time = "e"
-    holder = iface.iface()
+    pass
 
 
 # ress the green button in the gutter to run the script.

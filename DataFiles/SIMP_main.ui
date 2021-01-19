@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1075</width>
-    <height>717</height>
+    <width>1079</width>
+    <height>726</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -289,17 +289,17 @@
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="button_test">
+    <widget class="QPushButton" name="button_open_cdm">
      <property name="geometry">
       <rect>
-       <x>770</x>
-       <y>500</y>
-       <width>93</width>
+       <x>800</x>
+       <y>270</y>
+       <width>171</width>
        <height>28</height>
       </rect>
      </property>
      <property name="text">
-      <string>TEST</string>
+      <string>전파대상 CDM 폴더 열기</string>
      </property>
     </widget>
     <widget class="QPushButton" name="button_test_2">
@@ -315,7 +315,7 @@
       <string>TEST</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="button_delete_list">
      <property name="geometry">
       <rect>
        <x>140</x>
