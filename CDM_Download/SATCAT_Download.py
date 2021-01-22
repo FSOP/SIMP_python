@@ -14,7 +14,7 @@ def update_satcat():
     clear_cat()
     update_query = "insert into satcat values (?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     db_handle = DB_Bottom.DB_Bottom()
-    data = Web_Celestrak.CelestrakCAT().get_SATCAT()
+    data = Web_Celestrak.get_SATCAT()
 
     db_handle.db_init(iface.LOC_DB_CDM)
     cur = db_handle.cur

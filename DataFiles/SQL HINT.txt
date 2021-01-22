@@ -96,3 +96,27 @@ select cdm.message_id from cdm,
 	(select eventnum, max(creation_date) as c_date 
 	from cdm, satcat 
 	where creation_date > '2021-01-15T12:00:00' and cdm.sat1_international_designator = satcat.international_designator group by eventnum) o where cdm.eventnum = o.eventnum and cdm.creation_date = o.c_date
+
+
+#### 6. Decay message table creation
+CREATE TABLE decay (
+norad_cat_id int, 
+object_number int,
+object_name string,
+intldes string,
+object_id string,
+rcs double,
+rcs_size string,
+country string,
+msg_epoch datetime,
+decay_epoch datetime,
+source string,
+msg_type string,
+precedence string,
+primary key(norad_cat_id, msg_epoch)
+)
+
+#### 6.2 query count number of decay messages within 10 days
+select norad_cat_id, decay_epoch, max(msg_epoch) from decay where msg_epoch > '2021-01-22'
+
+ 

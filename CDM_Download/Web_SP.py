@@ -2,6 +2,10 @@ import requests
 from CDM_Download import iface
 
 
+def url_encoder(url):
+    return url.replace(" ", "%20").replace(">", "%3E").replace("<", "3C")
+
+
 class SPlogin:
     def __init__(self):
         pass
@@ -31,23 +35,16 @@ class SPlogin:
         if self.session is not None:
             self.session.close()
 
-    def get_sp_cdm(self, query_sp):
+    def get_sp_data(self, query_sp):
         if self.session is None:
             print("[SP REQUEST] 로그인 정보 없음")
 
-        print("[SP CDM DOWN] SpaceTrack 요청 url: {}".format(iface.baseSPurl + query_sp))
-        resp = self.session.get(iface.baseSPurl + query_sp)
+        print("[SP CDM DOWN] SpaceTrack 요청 url: {}".format(iface.baseSPurl + url_encoder(query_sp)))
+        resp = self.session.get(iface.baseSPurl + url_encoder(query_sp))
         # print(resq.text)
 
         return resp.text
 
-    def get_cdm_xml(self, lists):
-        for p in lists:
-            # query = iface.baseSPurl + iface.queryCDM_xml.format(p)
-            resp = self.session.get(iface.baseSPurl + iface.queryCDM_xml.format(p))
-
-            return resp.text
-
-
-
-            #print(resp.text)
+    def get_cdm_xml(self, message_id):
+        resp = self.session.get(iface.baseSPurl + iface.queryCDM_xml.format(message_id))
+        return resp.text

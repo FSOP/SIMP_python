@@ -17,6 +17,7 @@ LOC_REPORT_TEMPLATE = "..\\DataFiles\\Template.docx"
 LOC_DAILY_REPORT = "..\\Result_report\\{}_DailyReport.docx"
 LOC_CDM_XML = "..\\CDM_XML\\{}.xml"
 LOC_CONFIG_TXT = "..\\..\\config.txt"
+LOC_DB_DECAY = "..\\DataFiles\\Decay.txt"
 
 baseSPurl = "https://www.space-track.org/"
 
@@ -24,6 +25,7 @@ query_limit = 500
 queryCDM_creation = "expandedspacedata/query/class/cdm/CREATION_DATE/>{}/orderby/CONSTELLATION asc/limit/" + str(query_limit) + "/format/json/emptyresult/show"
 queryCDM_tca = "expandedspacedata/query/class/cdm/TCA/>{}/orderby/CONSTELLATION asc/limit/" + str(query_limit) + "/format/json/emptyresult/show"
 queryDecay = "basicspacedata/query/class/decay/INSERT_EPOCH/>{}/orderby/DECAY_EPOCH desc/limit/500/format/json/emptyresult/show"
+queryDecay_with_blank = "basicspacedata/query/class/decay/orderby/MSG_EPOCH asc/format/json/emptyresult/show"
 queryCDM_xml = "expandedspacedata/query/class/cdm/MESSAGE_ID/{}/orderby/CONSTELLATION%20asc/format/xml/emptyresult/show"
 SPauthurl = "/ajaxauth/login"
 SPauthformat = "identity={}&password={}"

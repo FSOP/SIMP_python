@@ -21,7 +21,7 @@ def download():
     # SpaceTrack 로그인 및 CDM 다운로드 수행
     SP = Web_SP.SPlogin()
     SP.get_login(spid=conf['spid'], sppw=conf['sppw'])
-    cdm_data = SP.get_sp_cdm(sp_query)
+    cdm_data = SP.get_sp_data(sp_query)
     SP.sp_close()
 
     # 테스트를 위해 텍스트로 저장된 CDM 불러옴
