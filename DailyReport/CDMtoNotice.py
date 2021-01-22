@@ -81,7 +81,7 @@ class CDMtoNotice:
                 'SAT2_NORAD': str(p[11]),
                 'TCA': p[5].replace("T","\n"),
                 'MISS_DISTANCE': str(p[3]),
-                'PROBABILITY': probability,
+                'PROBABILITY': str(probability),
                 'MET_CRITERIA': met_criteria,
                 'EVENTNUM': str(p[6])
             }
