@@ -3,7 +3,7 @@
 
 from CDM_Download import iface, Web_SP
 from data import Metadata, Update_satellites, Time_Converter
-from DailyReport import CountNewCDM, MergeReport, CDMtoNotice, CDMtoXML
+from DailyReport import CountNewCDM, MergeReport, CDMtoNotice, CDMtoXML, Decay_data, SATCAT_data
 import datetime
 
 
@@ -27,18 +27,34 @@ def make_report(panel_data):
     last_report_made_utc = Metadata.Metadata().get_metadata()[iface.REPORT_REF_TIME]
     print("[MakeReport] 보고서를 생성합니다. {} (UTC) 부터 업데이트된 내용을 검색합니다".format(last_report_made_utc))
 
-    # 보고서 작성 데이터 업데이트
+    # 0. 보고서 작성 데이터 업데이트
+    # 0.1 보고서 생성 기준시간
     report_data.update({'last_cdm_creation': last_report_made_utc})
+
+    # 0.2 CDM 업데이트 수
     report_data.update(CountNewCDM.CountNewCDM().count_cdm(last_report_made_utc))
     report_data.update(panel_data)
 
+    # 0.3 전파대상 CDM 을 관리할.. 인스턴스
     cdm_list_data = CDMtoNotice.CDMtoNotice()
+    # 0.3.1. 전파대상 CDM 수
     report_table_data = cdm_list_data.screened_cdm(last_report_made_utc)
-    CDMtoXML.download_cdm_xml(cdm_list_data.list_to_notice)
+
+    # 0.3.2. 전파대상 CDM 다운로드 (인터넷 연결이 안될 때 주석처리)
+    # CDMtoXML.download_cdm_xml(cdm_list_data.list_to_notice)
+
+    # 0.4 Decay 메시지 개수
+    report_data.update(Decay_data.count_decay_forecast())
+
+    # 0.5 SATCAT 데이터 입력
+    report_data.update(SATCAT_data.get_satcat_count())
 
     report_builder.merge_init()
     report_builder.merge_plain_data(report_data)
+    # 전파대상 CDM 리스트 출력
     report_builder.merge_table_data("CDM_NO", report_table_data)
+    # Decay 리스트 출력
+    report_builder.merge_table_data("norad_id", Decay_data.get_decay_list())
     # 보고서 파일의 이름은 KST 시간으로 생성됨
     report_builder.merge_create_report(file_name)
 
@@ -53,4 +69,4 @@ class MakeReport:
 
 
 if __name__ == "__main__":
-    make_report()
+    make_report({})

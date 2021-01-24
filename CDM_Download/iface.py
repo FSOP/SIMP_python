@@ -17,7 +17,7 @@ LOC_REPORT_TEMPLATE = "..\\DataFiles\\Template.docx"
 LOC_DAILY_REPORT = "..\\Result_report\\{}_DailyReport.docx"
 LOC_CDM_XML = "..\\CDM_XML\\{}.xml"
 LOC_CONFIG_TXT = "..\\..\\config.txt"
-LOC_DB_DECAY = "..\\DataFiles\\Decay.txt"
+LOC_DB_DECAY = "..\\DataFiles\\CDM.txt"
 
 baseSPurl = "https://www.space-track.org/"
 
@@ -33,7 +33,9 @@ URL_SATCAT = "http://celestrak.com/pub/satcat.txt"
 
 Time_format = "%Y-%m-%dT%H:%M:%S"
 Time_format_2 = "%Y%m%d_%H%M%S"
+Time_format_stk = '%d %b %Y %H:%M:%S.%f'
 
+list_of_satcat_country = ['US', 'UK', 'FR', 'JPN', 'PRC', 'CIS']
 
 META_DATA_TIME_UTC = "2021-01-01T00:00:00"
 META_DATA_LIST = {

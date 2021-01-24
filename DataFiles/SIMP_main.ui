@@ -31,6 +31,9 @@
    <property name="frameShape">
     <enum>QFrame::Box</enum>
    </property>
+   <property name="currentIndex">
+    <number>3</number>
+   </property>
    <widget class="QWidget" name="page">
     <widget class="QListWidget" name="list_report">
      <property name="geometry">
@@ -40,6 +43,9 @@
        <width>201</width>
        <height>481</height>
       </rect>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ExtendedSelection</enum>
      </property>
     </widget>
     <widget class="QGroupBox" name="groupBox">
@@ -344,7 +350,112 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="page_2"/>
+   <widget class="QWidget" name="page_2">
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>40</y>
+       <width>64</width>
+       <height>15</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TLE Filter</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_4">
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>291</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Black</family>
+       <pointsize>20</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>STK 분석</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_startSTK">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>120</y>
+       <width>161</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>start STK</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_test2">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>170</y>
+       <width>161</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>test2</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_getSTK">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>120</y>
+       <width>161</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>get STK</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_executeSTK">
+     <property name="geometry">
+      <rect>
+       <x>900</x>
+       <y>390</y>
+       <width>93</width>
+       <height>181</height>
+      </rect>
+     </property>
+     <property name="accessibleDescription">
+      <string>ssdf</string>
+     </property>
+     <property name="text">
+      <string>PushButton</string>
+     </property>
+     <property name="shortcut">
+      <string>Alt+S</string>
+     </property>
+    </widget>
+    <widget class="QPlainTextEdit" name="text_STK_comm">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>390</y>
+       <width>841</width>
+       <height>171</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QPushButton" name="button_daily_report">
    <property name="geometry">
@@ -372,7 +483,7 @@
     <string>우주물체 자료관리</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_3">
+  <widget class="QPushButton" name="button_TLEfilter">
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -383,6 +494,19 @@
    </property>
    <property name="text">
     <string>TLE 필터</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_STK">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>20</y>
+     <width>161</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>STK 분석</string>
    </property>
   </widget>
  </widget>

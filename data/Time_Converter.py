@@ -27,5 +27,9 @@ def str_to_datetime(str_val, time_format=iface.Time_format):
     return datetime.datetime.strptime(str_val, time_format)
 
 
+def stk_to_datetime(access_time, time_format=iface.Time_format_stk):
+    return datetime.datetime.strptime(access_time, time_format)
+
+
 def datetime_to_str(datetime_val, time_format=iface.Time_format):
     return datetime.datetime.strftime(datetime_val, time_format)

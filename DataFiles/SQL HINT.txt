@@ -92,6 +92,7 @@ select message_id from cdm where creation_date in
 select cdm.message_id from cdm, satcat, (select eventnum, max(creation_date) as c_date from cdm where creation_date > '2021-01-15T12:00:00' group by eventnum) o where cdm.eventnum = o.eventnum and cdm.creation_date = o.c_date
 
 ## 5.7 전파대상 CDM 검색
+## 집계함수 에러 반영
 select cdm.message_id from cdm, 
 	(select eventnum, max(creation_date) as c_date 
 	from cdm, satcat 
@@ -117,6 +118,42 @@ primary key(norad_cat_id, msg_epoch)
 )
 
 #### 6.2 query count number of decay messages within 10 days
-select norad_cat_id, decay_epoch, max(msg_epoch) from decay where msg_epoch > '2021-01-22'
+select count(*) from (select norad_cat_id, decay_epoch, max(msg_epoch) from decay where decay_epoch > '2021-01-22' and decay_epoch < '2021-01-29' group by norad_cat_id)
 
+select norad_cat_id, decay_epoch, max(msg_epoch), source, satcat.satellite_name  from decay, satcat where decay.norad_cat_id = satcat.norad and decay_epoch > '2021-01-22' and decay_epoch < '' group by norad_cat_id order by norad_cat_id;
+
+## 아래는 참고용
+select norad_cat_id, decay_epoch, max(msg_epoch) from decay where decay_epoch > '2021-01-22' group by norad_cat_id
+
+select norad_cat_id, decay_epoch, max(msg_epoch), source, satcat.satellite_name  from decay, satcat where decay.norad_cat_id = satcat.norad and decay_epoch > '2021-01-22' and decay_epoch < '' group by norad_cat_id order by norad_cat_id;
  
+select norad_cat_id, decay_epoch, max(msg_epoch), source, satcat.satellite_name  from decay, satcat where decay.norad_cat_id = satcat.norad and norad_cat_id = 37820 order by msg_epoch;
+
+#### 6.3 
+
+## 7. SATCAT
+## 7.1 국가별 조회
+select count(*) from satcat where ownership= ? and operational_status_code not in ("D", "-", "")
+
+# all 총계
+select count(*) from satcat
+
+# active 
+select count(*) from satcat where operational_status_code not in ("D", "-", "")
+
+# ALL 소실
+select count(*) from satcat where operational_status_code in ("D")
+
+# ALL 공전
+select count(*) from satcat where operational_status_code not in ("D")
+
+## payload - on orbit
+select count(*) from satcat where payload_flag="*" and operational_status_code is not "D"
+## payload- decayed
+select count(*) from satcat where payload_flag="*" and operational_status_code is "D"
+## debris - on orbit
+select count(*) from satcat where payload_flag="" and operational_status_code is not "D"
+## debris - decayed
+select count(*) from satcat where payload_flag="" and operational_status_code is "D"
+## active payloads
+select count(*) from satcat where operational_status_code not in ("D", "-", "")

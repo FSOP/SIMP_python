@@ -8,6 +8,7 @@ def url_encoder(url):
 
 class SPlogin:
     def __init__(self):
+        self.session = None
         pass
         # self.session = None
 

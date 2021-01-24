@@ -3,6 +3,20 @@ sql_delete_report = "delete from metadata where target = ? and updatetime = ?"
 # Decay 메시지 입력
 sql_insert_decay = "INSERT INTO decay (norad_cat_id, object_number, object_name, intldes, object_id ,rcs, rcs_size, country, msg_epoch, decay_epoch, source, msg_type, precedence) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
 
+# 예보된 Decay 수
+sql_count_decay = "select count(*) from (select norad_cat_id, decay_epoch, max(msg_epoch) from decay where decay_epoch > ? and decay_epoch < ? group by norad_cat_id)"
+
+# 출력할 Decay 메시지 검색
+sql_query_decay = "select norad_cat_id, decay_epoch, max(msg_epoch), source, satcat.satellite_name  from decay, satcat where decay.norad_cat_id = satcat.norad and decay_epoch > ? and decay_epoch < ? group by norad_cat_id order by norad_cat_id"
+
+# SATCAT 데이터 쿼리
+sql_payload_orbit = 'select count(*) from satcat where payload_flag="*" and operational_status_code is not "D"'
+sql_payload_decayed = 'select count(*) from satcat where payload_flag="*" and operational_status_code is "D"'
+sql_debris_orbit = 'select count(*) from satcat where payload_flag="" and operational_status_code is not "D"'
+sql_debris_decayed = 'select count(*) from satcat where payload_flag="" and operational_status_code is "D"'
+sql_active_sat = 'select count(*) from satcat where operational_status_code not in ("D", "-", "")'
+sql_count_country = 'select count(*) from satcat where ownership= ? and operational_status_code not in ("D", "-", "")'
+
 class iface_SQL:
     orbit_type_period_criteria = 225  # see Space-track.org Spaceflight safety handbook
     orbit_leo_period_criteria = "< 225"
