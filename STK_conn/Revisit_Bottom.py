@@ -131,6 +131,10 @@ def core_revisit_time(dict_access, scenario_start, scenario_stop):
     return [revisit_avg, max(gaps), min(gaps)]
 
 
+def core_get_fom(val_str):
+    return val_str[val_str.find("Average (sec)"):].split("\"")[1].split(",")
+
+
 def list_popping(list_val, list_to_pop):
     list_to_pop.sort(reverse=True)
     for p in list_to_pop:

@@ -26,12 +26,14 @@ class bottom_stk:
             print(e)
 
     def simple_connect(self, comm):
-        val = None
+        val = ""
         try:
-            val = self.root.ExecuteCommand(comm).item(0)
-
+            re_val = self.root.ExecuteCommand(comm)
+            for p in range(re_val.Count):
+                val += re_val.item(p)
         except Exception as e:
             print(e)
+
         return val
 
 
