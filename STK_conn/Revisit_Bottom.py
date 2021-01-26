@@ -118,6 +118,7 @@ def core_second_filter(dict_gaps, dict_access):
     return dict_result
 
 
+# 최종 Access 결과로 평균 최대 최소 재방문 주기 계산
 def core_revisit_time(dict_access, scenario_start, scenario_stop):
     gaps = []
     num_access = len(dict_access[0])
@@ -128,7 +129,7 @@ def core_revisit_time(dict_access, scenario_start, scenario_stop):
         gaps.append( len_time - (stop_time - start_time).total_seconds())
 
     revisit_avg = sum(gaps) / (num_access+1)
-    return [revisit_avg, max(gaps), min(gaps)]
+    return revisit_avg, max(gaps), min(gaps)
 
 
 def core_get_fom(val_str):

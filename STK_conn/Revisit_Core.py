@@ -63,7 +63,7 @@ def get_primary_access():
         print(filtered_access)
         print("number of access: {}".format(len(filtered_access[0])))
 
-        print(Revisit_Bottom.core_revisit_time(filtered_access, stk_scenario_start, stk_scenario_stop))
+        return Revisit_Bottom.core_revisit_time(filtered_access, stk_scenario_start, stk_scenario_stop)
 
 
 if __name__ == "__main__":

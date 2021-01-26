@@ -1,0 +1,25 @@
+New / */Facility Dokdo
+New / */Chain Dokdo
+New / */Facility Dokdo
+New / */Constellation Primary
+New / */Satellite SAT_
+New / */Satellite/SAT_/Sensor Dokdo
+
+
+
+SetState */Satellite/SAT_ Classical J2Perturbation UseScenarioInterval 60 J2000 "1 Jun 2021 12:00:00.00" 6878.14.0 0.0 50 0 -29.7859 0
+
+
+AllInstanceNames /
+
+Chains_R */Chain/Primary Strands
+
+Report_RM */CoverageDefinition/North_Korea/FigureOfMerit/FigureOfMerit1 Style "Grid Stats"
+
+AllInstanceNames /
+
+return#		/Scenario/test_scenario/CoverageDefinition/North_Korea/FigureOfMerit/FigureOfMerit1
+
+Position */Facility/Facility1
+
+SetPosition */Facility/Wallops Geodetic 37.9 -75.5 0.0
