@@ -29,7 +29,7 @@ def new_task(values):
             task_num = str(int(last_task[1]) + 1)
 
     task_name = "{}_{}".format(task_year, task_num)
-
+    # task_name = "task_62"
     db.cur.execute("insert into tasks (insert_time, task_name) values (?, ?)",
                    (Time_Converter.datetime_to_str(now_utc), task_name))
 
@@ -209,15 +209,15 @@ if __name__ == "__main__":
         'primary': [],
         'secondary': [],
         'altitude': ['500'],
-        'inclination': ['44.0', '45.0', '46.0', '47.0', '48.0', '49.0', '50.0'],
-        'sats': ['28'],
+        'inclination': [str(p) for p in range(39,50)],
+        'sats': [str(p) for p in range(30,40)],
         'scenario_start': '1 Jan 2021 03:00:00',
         'scenario_stop': '10 Jan 2021 03:00:00',
         'grid': ['40'],
         'inter_plane_space': ['1'],
         'sensor_type': ['SAR'],
         'sensor_set': ['15_35_89_89'],
-        'task_name': '2021_22'
+        'task_name': 'test_62'
     }
     # make_report_result("2021_12")
     new_task(sample)

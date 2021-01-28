@@ -6,8 +6,23 @@ import numpy
 
 # 해경 분석 요구조건에 맞춰서 새로 짬
 # STK bottom 은 start_stk, get_stk, simple_connect 정도만 사용하자..
+def compress_result(dict_res):
+    val = []
+    for p in dict_res.keys():
+        val.append(dict_res[p])
+
+    ar = numpy.array(val)
+    group_avg = ar[:,0:1]/60
+    group_max = ar[:,1:2]/60
+    group_min = ar[:,2:3]/60
+
+    return [numpy.average(group_avg), numpy.max(group_avg), numpy.min(group_avg),
+            numpy.average(group_max), numpy.max(group_max), numpy.min(group_max),
+            numpy.average(group_min), numpy.max(group_min), numpy.min(group_min)]
+
+
 class revisit_shell:
-    def __init__(self, stk_handle=STK_bottom.bottom_stk(), task_name="test"):
+    def __init__(self, stk_handle=STK_bottom.bottom_stk(), task_name="task_62"):
         self.stk = stk_handle
         self.task_name = task_name
 
@@ -47,12 +62,17 @@ class revisit_shell:
             strands_nk = self.get_strands("NK")
             dict_result_secondary = Revisit_Core.get_primary_access(self.stk, dict_setting['scenario_interval'], strands_nk, list_point)
             # 음영지역 (shadow point) 관리방법 찾아랍
-            # 분석결과 모음
-            print(dict_result_secondary[0])
-            # 음영지역 모음
-            print(dict_result_secondary[1])
-            # 로그
-            print(dict_result_secondary[2])
+            res = compress_result(dict_result_secondary[0])
+
+            with open("..\\Log\\computeLog_{}.txt".format(self.task_name), 'a') as fp:
+                # 분석결과 모음
+                fp.write("raw {} {} km: {}\n".format(str_set, altitude, dict_result_secondary[0]))
+                fp.write("RESULT {} {} km: {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f}\n".format(str_set, altitude, res[0], res[1], res[2], res[3], res[4], res[5]))
+                # 음영지역 모음
+                fp.write("shadow {} {} km: {}\n".format(str_set, altitude, dict_result_secondary[1]))
+                # 로그
+                for p in dict_result_secondary[2].splitlines():
+                    fp.write("filtered {} {} km {}\n".format(str_set, altitude, p))
         pass
 
     def get_strands(self, name_chain):
@@ -84,7 +104,7 @@ class revisit_shell:
         list_point = []
         lat = 0
 
-        self.add_coverage_definition([target], grid=100000, add_fom=False)
+        self.add_coverage_definition([target], grid=40000, add_fom=False)
         val = self.stk.simple_connect("Cov_RM */CoverageDefinition/{} GridPoints".format(target))
         for i, p in enumerate(val.split(" ")[2:]):
             if i % 3 == 0:
@@ -156,21 +176,6 @@ class revisit_shell:
             if sat == "SAT_": continue
             self.stk.simple_connect(
                 "Chains */Constellation/SENSORs Add Satellite/{}/Sensor/{}".format(sat, name_sensor))
-
-    def compress_result(self, dict_res):
-        val = []
-        for p in dict_res.keys():
-            val.append(dict_res[p])
-
-        ar = numpy.array(val)
-        group_min = ar[:,0:1]
-        group_max = ar[:,1:2]
-        group_avg = ar[:,2:3]
-
-        print(group_min)
-        print(group_min/60)
-        print(numpy.average(group_min/60))
-
 
     def load_settings(self):
         setting = int_STK.shell_setting

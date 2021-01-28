@@ -59,7 +59,8 @@ def get_primary_access(stk, interval, strands_primary, list_seconds):
 
         # secondary Target 임무 할당 가능시간 [[access_start], [access_stop]]
         filtered_access = Revisit_Bottom.core_merge_time(Revisit_Bottom.core_second_filter(dict_gaps, dict_second_access))
-        log_val += str_filtered_value(filtered_access, point)
+        # log_val += str_filtered_value(filtered_access, point)
+
         # print("filtered_secondary_access")
         # print(filtered_access)
         # print("number of access: {}".format(len(filtered_access[0])))
