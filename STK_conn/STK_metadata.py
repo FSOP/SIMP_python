@@ -14,7 +14,7 @@ def new_task(values, task_name=""):
     db.db_init(int_STK.LOC_DB_STK_META)
 
     if task_name == "":
-        last_task = db.cur.execute("select task_name from tasks order by insert_time desc limit 1").fetchone()
+        last_task = db.cur.execute("select task_name from tasks where task_name not like 'test%' order by insert_time desc limit 1").fetchone()
 
         if last_task is None:
             task_year = year
@@ -220,7 +220,7 @@ if __name__ == "__main__":
         'sensor_set': ['15_35_89_89'],
     }
     # make_report_result("2021_12")
-    new_task(sample)
+    new_task(sample, 'test_3')
     # print(get_list_area_file(""))
     # @print(get_facility_list())
     # print(get_dividor(30))
