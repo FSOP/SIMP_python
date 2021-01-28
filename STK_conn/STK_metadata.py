@@ -6,29 +6,30 @@ import datetime, sys, os
 
 
 # 분석 메타데이터 저장 STK_meta.txt
-def new_task(values):
+def new_task(values, task_name=""):
     now_utc = datetime.datetime.utcnow()
     year = str(now_utc.year)
 
     db = DB_Bottom.DB_Bottom()
     db.db_init(int_STK.LOC_DB_STK_META)
 
-    last_task = db.cur.execute("select task_name from tasks order by insert_time desc limit 1").fetchone()
+    if task_name == "":
+        last_task = db.cur.execute("select task_name from tasks order by insert_time desc limit 1").fetchone()
 
-    if last_task is None:
-        task_year = year
-        task_num = "1"
-    else:
-        last_task = last_task[0].split("_")
-        last_year = last_task[0]
-        if year != last_year:
+        if last_task is None:
             task_year = year
             task_num = "1"
         else:
-            task_year = last_year
-            task_num = str(int(last_task[1]) + 1)
+            last_task = last_task[0].split("_")
+            last_year = last_task[0]
+            if year != last_year:
+                task_year = year
+                task_num = "1"
+            else:
+                task_year = last_year
+                task_num = str(int(last_task[1]) + 1)
 
-    task_name = "{}_{}".format(task_year, task_num)
+        task_name = "{}_{}".format(task_year, task_num)
     # task_name = "task_62"
     db.cur.execute("insert into tasks (insert_time, task_name) values (?, ?)",
                    (Time_Converter.datetime_to_str(now_utc), task_name))
@@ -209,7 +210,7 @@ if __name__ == "__main__":
         'primary': [],
         'secondary': [],
         'altitude': ['500'],
-        'inclination': [str(p) for p in range(39,50)],
+        'inclination': [str(p) for p in range(45,50)],
         'sats': [str(p) for p in range(30,40)],
         'scenario_start': '1 Jan 2021 03:00:00',
         'scenario_stop': '10 Jan 2021 03:00:00',
@@ -217,7 +218,6 @@ if __name__ == "__main__":
         'inter_plane_space': ['1'],
         'sensor_type': ['SAR'],
         'sensor_set': ['15_35_89_89'],
-        'task_name': 'test_62'
     }
     # make_report_result("2021_12")
     new_task(sample)
