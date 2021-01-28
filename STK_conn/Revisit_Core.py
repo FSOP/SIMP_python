@@ -24,18 +24,15 @@
 from STK_conn import STK_bottom, int_STK, Revisit_Bottom
 
 
-def get_primary_access():
-    stk_scenario_start = "12 Jan 2021 03:00:00.000"
-    stk_scenario_stop = "15 Jan 2021 03:00:00.000"
-    list_second_target = ["Dokdo"]
+def get_primary_access(stk, interval, strands_primary, list_seconds):
+    stk_scenario_start = interval[0]
+    stk_scenario_stop = interval[1]
 
-    stk = STK_bottom.bottom_stk()
-
-    # raw_primary_access = stk.simple_connect(int_STK.conn_get_chain_access.format("Primary"))
-    # dict_primary_access = Revisit_Bottom.core_strands_to_list(raw_primary_access)
+    grid_facility = {}
 
     # sample 데이터 불러옴
-    dict_primary_access = Revisit_Bottom.core_strands_to_list(Revisit_Bottom.get_sample_data("stk_sample_2.txt"))
+    # dict_primary_access = Revisit_Bottom.core_strands_to_list(Revisit_Bottom.get_sample_data("stk_sample_4.txt"))
+    dict_primary_access = Revisit_Bottom.core_strands_to_list(strands_primary)
 
     # 1순위 표적에 대한 Access Time 형식을 [각 위성 - 각 표적] 을 [각 위성 - 표적군] 으로 변환
     for p in dict_primary_access.keys():
@@ -44,16 +41,18 @@ def get_primary_access():
     # 분석 결과로 GAP 시간 구함
     dict_gaps = Revisit_Bottom.core_get_gaps(dict_primary_access, stk_scenario_start, stk_scenario_stop )
 
-    print("primary_access")
-    print(dict_primary_access)
-    print("gap time")
-    print(dict_gaps)
+    # print("primary_access")
+    # print(dict_primary_access)
+    # print("gap time")
+    # print(dict_gaps)
 
-    for p in list_second_target:
-        # raw_second_access = stk.simple_connect(int_STK.conn_get_chain_access.format("D_{}".format(p)))
-        # dict_second_access = Revisit_Bottom.core_strands_to_list(raw_second_access)
+    for point in list_seconds:
+        print("{} 포인트 분석결과".format(point))
+        # stk.simple_connect('Chains */Chain/point_{} Add Constellation/SENSORs'.format(point))
+        raw_second_access = stk.simple_connect("Chains_R */Chain/{} Strands".format("point_{}".format(point)))
+        dict_second_access = Revisit_Bottom.core_strands_to_list(raw_second_access)
 
-        dict_second_access = Revisit_Bottom.core_strands_to_list(Revisit_Bottom.get_sample_data("stk_sample_3.txt"))
+        # dict_second_access = Revisit_Bottom.core_strands_to_list(Revisit_Bottom.get_sample_data("stk_sample_3.txt"))
         print("secondary_access")
         print(dict_second_access)
 
@@ -63,7 +62,10 @@ def get_primary_access():
         print(filtered_access)
         print("number of access: {}".format(len(filtered_access[0])))
 
-        return Revisit_Bottom.core_revisit_time(filtered_access, stk_scenario_start, stk_scenario_stop)
+        grid_facility[point] = Revisit_Bottom.core_revisit_time(filtered_access, stk_scenario_start, stk_scenario_stop)
+        # return Revisit_Bottom.core_revisit_time(filtered_access, stk_scenario_start, stk_scenario_stop)
+    return grid_facility
+
 
 
 if __name__ == "__main__":

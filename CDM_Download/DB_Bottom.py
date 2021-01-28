@@ -1,6 +1,14 @@
 import sqlite3
 from CDM_Download import iface
 
+def simple(loc_db, query):
+    db = DB_Bottom()
+    db.db_init(loc_db)
+    rows = db.cur.execute(query).fetchall()
+    db.conn.commit()
+    db.db_close()
+
+    return rows
 
 class DB_Bottom:
     conn = ""
@@ -26,14 +34,13 @@ class DB_Bottom:
         self.conn = None
         self.cur = None
 
-    def db_simple_execute(self, query, db):
+    def db_execute(self, query, db):
         self.db_init(db)
 
         rows = self.cur.execute(query).fetchall()
 
         self.conn.commit()
         self.db_close()
-
         return rows
 
 

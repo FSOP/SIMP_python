@@ -1,6 +1,6 @@
-from STK_conn import STK_bottom, Revisit_Bottom, STK_metadata, Revisit_shell
+from STK_conn import STK_bottom, Revisit_Bottom, STK_metadata, Revisit_shell_old
 from PyQt5.QtWidgets import *
-
+import os, sys
 
 class panel_stk:
     def __init__(self, ui):
@@ -35,6 +35,10 @@ class panel_stk:
         self.ui.button_set1.clicked.connect(lambda: self.ui.stacked_STK.setCurrentIndex(0))
         self.ui.button_set2.clicked.connect(lambda: self.ui.stacked_STK.setCurrentIndex(1))
         self.ui.button_load_facility.clicked.connect(lambda: self.load_facility())
+        self.ui.button_resume.clicked.connect(lambda: self.resume_task())
+        self.ui.button_unload_facility.clicked.connect(lambda: self.stk_handle.unload_all_facility())
+        self.ui.load_facility.clicked.connect(lambda: self.stk_handle.points_to_facility())
+        self.ui.get_list_area.clicked.connect(lambda: self.load_list_area())
 
         self.ui.list_altitude.itemPressed.connect(lambda: self.get_list_case())
         self.ui.list_inclination.itemPressed.connect(lambda: self.get_list_case())
@@ -44,27 +48,18 @@ class panel_stk:
         self.ui.fixed_inclination.stateChanged.connect(lambda: self.check_fixed_val())
         self.ui.fixed_sats.stateChanged.connect(lambda: self.check_fixed_val())
 
+    def resume_task(self):
+        task_name = self.ui.line_task.text()
+        Revisit_shell_old.revisit_shell(self.stk_handle, task_name).revisit_operator_main()
+        pass
+
     # 분석 시작
     def start_analysis(self):
         self.check_fixed_val()
-        sample = {
-            'altitude': [400, 500],
-            'inclination': [40, 50],
-            'sats': [28, 30],
-            'scenario_start': '1 Jan 2020 03:00:00',
-            'scenario_stop': '10 Jan 2020 03:00:00',
-            'Area': ['NK'],
-            'primary': ['seoul', 'daegu'],
-            'secondary': ['dokdo', 'westSea'],
-            'inter_plane_space': "1",
-            'sensor_type': "SAR",
-            'sensor_set': "20_50_83_83"
-        }
-
+        self.stk_handle.chk_stk()
         print("start of analysis")
-        print(self.case_altitude)
-        print(self.case_inclination)
-        print(self.case_number_sats)
+        data = self.get_panel_data()
+        print(data)
 
         try:
             # 분석에 사용하는 Facility 만 추가
@@ -74,15 +69,42 @@ class panel_stk:
         except Exception as e:
             print(e)
 
-        task_name = STK_metadata.new_task(sample)
+        task_name = STK_metadata.new_task(data)
+        print("end of metadata")
         # 재방문주기 계산 반복작업
-        Revisit_shell.revisit_operator(task_name)
+        Revisit_shell_old.revisit_shell(self.stk_handle, task_name).revisit_operator_main()
         # 분석 결과를 docx 보고서로 제작함
+
+    def get_panel_data(self):
+        incidence_1 = self.ui.line_incidence_1.text()
+        incidence_2 = self.ui.line_incidence_2.text()
+        exclusion_1 = self.ui.line_exclusion_1.text()
+        exclusion_2 = self.ui.line_exclusion_2.text()
+        data = {
+            'Area': self.get_list_selected(self.ui.list_area_file),
+            'primary': self.get_list_selected(self.ui.list_primary),
+            'secondary': self.get_list_selected(self.ui.list_secondary),
+            'altitude': self.case_altitude,
+            'inclination': self.case_inclination,
+            'sats': self.case_number_sats,
+            'scenario_start': self.ui.line_scenario_start.text(),
+            'scenario_stop': self.ui.line_scenario_stop.text(),
+            'grid': [self.ui.line_grid_km.text()],
+            'inter_plane_space': [self.ui.line_inter_plane.text()],  # 9
+            'sensor_type': ["SAR"],  # 10
+            'sensor_set': ["{}_{}_{}_{}".format(incidence_1, incidence_2, exclusion_1, exclusion_2)],  # incidence angle -> elevation angle   #11
+        }
+        return data
+
+    def load_list_area(self):
+        self.ui.list_area_file.addItems(STK_metadata.get_list_area_file())
+
+    def get_list_selected(self, obj):
+        return [p.text() for p in obj.selectedItems()]
 
     def load_facility(self):
         print("시작")
         self.stk_handle.insert_facility_from_db()
-
 
     def update_number_case(self):
         number_altitude = len(self.case_altitude)
@@ -172,9 +194,6 @@ class panel_stk:
         except Exception as e:
             print(e)
 
-
-
-
     def flush_list(self, obj):
         obj.clear()
         self.check_fixed_val()
@@ -189,5 +208,3 @@ class panel_stk:
         for p in text.splitlines():
             re_val = self.stk_handle.simple_connect(p)
             print(re_val)
-
-

@@ -12,8 +12,8 @@ def get_sample_data(fname):
 
 def core_get_gaps(dict_per_sat, scenario_start_str, scenario_stop_str):
     gap_per_sat = {}
-    scenario_start = Time_Converter.stk_to_datetime(scenario_start_str)
-    scenario_stop = Time_Converter.stk_to_datetime(scenario_stop_str)
+    scenario_start = Time_Converter.stk_to_datetime(scenario_start_str, time_format='%d %b %Y %H:%M:%S')
+    scenario_stop = Time_Converter.stk_to_datetime(scenario_stop_str, time_format='%d %b %Y %H:%M:%S')
 
     for p in dict_per_sat.keys():
         dict_per_sat[p][0].append(scenario_stop)
@@ -41,7 +41,8 @@ def core_strands_to_list(data):
         val = remover(p.split(" "))
 
         # 분석 대상 Origin Object 처리
-        org_sat = val[0].split("/")[1]
+        # print(val)
+        org_sat = val[2].split("/")[1]
 
         # Root Object 는 분석에서 제외
         if org_sat == 'SAT_':
@@ -105,7 +106,6 @@ def core_merge_time(val):
 
     return [list_start, list_stop]
 
-
 def core_second_filter(dict_gaps, dict_access):
     dict_result = [[], []]
     for sat in dict_gaps.keys():
@@ -122,12 +122,14 @@ def core_second_filter(dict_gaps, dict_access):
 def core_revisit_time(dict_access, scenario_start, scenario_stop):
     gaps = []
     num_access = len(dict_access[0])
-    len_time = (Time_Converter.stk_to_datetime(scenario_stop) - Time_Converter.stk_to_datetime(scenario_start)).total_seconds()
+    len_time = (Time_Converter.stk_to_datetime(scenario_stop, time_format='%d %b %Y %H:%M:%S') - Time_Converter.stk_to_datetime(scenario_start, time_format='%d %b %Y %H:%M:%S')).total_seconds()
 
     print("length of scenario: "+ str(len_time))
     for start_time, stop_time in zip(dict_access[0], dict_access[1]):
         gaps.append( len_time - (stop_time - start_time).total_seconds())
 
+    if not gaps:
+        gaps = [99999999]
     revisit_avg = sum(gaps) / (num_access+1)
     return revisit_avg, max(gaps), min(gaps)
 
@@ -151,14 +153,11 @@ def list_adder(list_val, number=1):
         ret_val.append(p + number)
     return ret_val
 
-
-
-
 # 날짜의 자리 수에 따라 발생하는 에러 처리를 위해 '' 공백 제거
 def remover(val):
     return_val = []
     for p in val:
-        if p is not '':
+        if p != '':
             return_val.append(p)
     return return_val
 
