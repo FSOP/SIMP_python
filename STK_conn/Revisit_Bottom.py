@@ -122,14 +122,18 @@ def core_second_filter(dict_gaps, dict_access):
 def core_revisit_time(dict_access, scenario_start, scenario_stop):
     gaps = []
     num_access = len(dict_access[0])
-    len_time = (Time_Converter.stk_to_datetime(scenario_stop, time_format='%d %b %Y %H:%M:%S') - Time_Converter.stk_to_datetime(scenario_start, time_format='%d %b %Y %H:%M:%S')).total_seconds()
+    datetime_scenario_start = Time_Converter.stk_to_datetime(scenario_start, time_format='%d %b %Y %H:%M:%S')
+    datetime_scenario_stop = Time_Converter.stk_to_datetime(scenario_stop, time_format='%d %b %Y %H:%M:%S')
+    len_time = (datetime_scenario_stop - datetime_scenario_start).total_seconds()
 
-    print("length of scenario: "+ str(len_time))
+    # print("length of scenario: "+ str(len_time))
+    dict_access[1].insert(0, datetime_scenario_start)
+    dict_access[0].append(datetime_scenario_stop)
     for start_time, stop_time in zip(dict_access[0], dict_access[1]):
-        gaps.append( len_time - (stop_time - start_time).total_seconds())
+        gaps.append((start_time - stop_time).total_seconds())
 
-    if not gaps:
-        gaps = [99999999]
+    if len(gaps)==1:
+        return -1
     revisit_avg = sum(gaps) / (num_access+1)
     return revisit_avg, max(gaps), min(gaps)
 

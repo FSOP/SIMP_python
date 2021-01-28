@@ -27,8 +27,9 @@ from STK_conn import STK_bottom, int_STK, Revisit_Bottom
 def get_primary_access(stk, interval, strands_primary, list_seconds):
     stk_scenario_start = interval[0]
     stk_scenario_stop = interval[1]
-
+    list_point_shadow = []
     grid_facility = {}
+    log_val = ""
 
     # sample 데이터 불러옴
     # dict_primary_access = Revisit_Bottom.core_strands_to_list(Revisit_Bottom.get_sample_data("stk_sample_4.txt"))
@@ -47,25 +48,35 @@ def get_primary_access(stk, interval, strands_primary, list_seconds):
     # print(dict_gaps)
 
     for point in list_seconds:
-        print("{} 포인트 분석결과".format(point))
+        #print("{} 포인트 분석결과".format(point))
         # stk.simple_connect('Chains */Chain/point_{} Add Constellation/SENSORs'.format(point))
         raw_second_access = stk.simple_connect("Chains_R */Chain/{} Strands".format("point_{}".format(point)))
         dict_second_access = Revisit_Bottom.core_strands_to_list(raw_second_access)
 
         # dict_second_access = Revisit_Bottom.core_strands_to_list(Revisit_Bottom.get_sample_data("stk_sample_3.txt"))
-        print("secondary_access")
-        print(dict_second_access)
+        # print("secondary_access")
+        # print(dict_second_access)
 
         # secondary Target 임무 할당 가능시간 [[access_start], [access_stop]]
         filtered_access = Revisit_Bottom.core_merge_time(Revisit_Bottom.core_second_filter(dict_gaps, dict_second_access))
-        print("filtered_secondary_access")
-        print(filtered_access)
-        print("number of access: {}".format(len(filtered_access[0])))
+        log_val += str_filtered_value(filtered_access, point)
+        # print("filtered_secondary_access")
+        # print(filtered_access)
+        # print("number of access: {}".format(len(filtered_access[0])))
 
-        grid_facility[point] = Revisit_Bottom.core_revisit_time(filtered_access, stk_scenario_start, stk_scenario_stop)
+        val = Revisit_Bottom.core_revisit_time(filtered_access, stk_scenario_start, stk_scenario_stop)
+        if val == -1:
+            list_point_shadow.append(point)
+            continue
+        grid_facility[point] = val
         # return Revisit_Bottom.core_revisit_time(filtered_access, stk_scenario_start, stk_scenario_stop)
-    return grid_facility
+    return [grid_facility, list_point_shadow, log_val]
 
+def str_filtered_value(list_value, point):
+    val_str = "point_{}".format(point)
+    for p, q in zip(list_value[0], list_value[1]):
+        val_str += "[{}, {}] ".format(p, q)
+    return val_str + "\n"
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@ from CDM_Download import DB_Bottom
 from STK_conn import Revisit_Core, int_STK, STK_bottom, Revisit_Bottom
 
 import os, sys
-
+import numpy
 
 # 해경 분석 요구조건에 맞춰서 새로 짬
 # STK bottom 은 start_stk, get_stk, simple_connect 정도만 사용하자..
@@ -46,7 +46,13 @@ class revisit_shell:
 
             strands_nk = self.get_strands("NK")
             dict_result_secondary = Revisit_Core.get_primary_access(self.stk, dict_setting['scenario_interval'], strands_nk, list_point)
-            print(dict_result_secondary)
+            # 음영지역 (shadow point) 관리방법 찾아랍
+            # 분석결과 모음
+            print(dict_result_secondary[0])
+            # 음영지역 모음
+            print(dict_result_secondary[1])
+            # 로그
+            print(dict_result_secondary[2])
         pass
 
     def get_strands(self, name_chain):
@@ -151,6 +157,20 @@ class revisit_shell:
             self.stk.simple_connect(
                 "Chains */Constellation/SENSORs Add Satellite/{}/Sensor/{}".format(sat, name_sensor))
 
+    def compress_result(self, dict_res):
+        val = []
+        for p in dict_res.keys():
+            val.append(dict_res[p])
+
+        ar = numpy.array(val)
+        group_min = ar[:,0:1]
+        group_max = ar[:,1:2]
+        group_avg = ar[:,2:3]
+
+        print(group_min)
+        print(group_min/60)
+        print(numpy.average(group_min/60))
+
 
     def load_settings(self):
         setting = int_STK.shell_setting
@@ -185,3 +205,5 @@ if __name__ == "__main__":
     shell = revisit_shell()
     shell.stk.get_stk()
     shell.main_analysis_shell()
+    #res = {'0': (76797.31188888889, 86397.029, 86396.933), '1': (69117.56100000002, 86396.989, 86396.905), '2': (74054.72257142856, 86397.292, 86397.104), '3': (76797.38377777778, 86397.205, 86396.914), '4': (76797.4717777778, 86397.196, 86397.119), '5': (76797.45322222222, 86397.275, 86396.956), '6': (74054.72285714286, 86397.279, 86397.109), '7': (69117.8218, 86397.296, 86397.255), '8': (76797.37766666667, 86397.19, 86396.913), '9': (69117.71280000001, 86397.172, 86397.107), '10': (69117.58459999999, 86397.017, 86396.937), '11': (99999999.0, 99999999, 99999999), '12': (76797.31044444445, 86397.062, 86396.906), '13': (69117.66459999999, 86397.288, 86396.872), '14': (77757.5201, 86397.733, 86396.877), '15': (76797.52777777778, 86397.274, 86397.142), '16': (76797.39088888888, 86397.146, 86396.962), '17': (74054.80071428572, 86397.298, 86397.244), '18': (74054.61471428572, 86397.29, 86396.912), '19': (76797.47, 86397.22, 86397.097), '20': (71997.54766666667, 86397.128, 86396.874), '21': (69117.66880000001, 86397.107, 86397.069), '22': (69117.50959999999, 86396.915, 86396.865), '23': (69117.75600000001, 86397.205, 86397.179), '24': (57597.90966666667, 86396.867, 86396.862), '25': (69117.6152, 86397.034, 86396.993), '26': (69117.73019999999, 86397.175, 86397.143)}
+    #shell.compress_result(res)
